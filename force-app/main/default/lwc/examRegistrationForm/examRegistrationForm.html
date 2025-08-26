@@ -1,0 +1,29 @@
+<template>
+   <lightning-card title="Registracija na Izpitni Rok" icon-name="custom:custom63">
+         <!-- Student -->
+         <lightning-combobox 
+               name="student" 
+               label="Prijava Študenta"
+               value={studentValue} 
+               placeholder="Izberi študenta"
+               options={studentsOptions}
+               onchange={handleStudentChange}>
+         </lightning-combobox>
+
+         <!-- Exam -->
+         <lightning-combobox 
+            name="examPeriod" 
+            label="Izpitni Rok"
+            value={examPeriodValue}
+            placeholder="Izberi izpitni rok"
+            options={examPeriodOptions}
+            onchange={handleExamPeriodTypeChange}
+            required>
+         </lightning-combobox>
+
+         <!-- Save Button -->
+         <div class="slds-m-top_medium">
+            <lightning-button variant="brand" label="Shrani" onclick={handleSave}></lightning-button>
+         </div>
+   </lightning-card>
+</template>

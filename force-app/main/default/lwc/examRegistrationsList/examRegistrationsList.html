@@ -1,0 +1,30 @@
+<template>
+    <lightning-card title="Prijavljeni Študenti" icon-name="standard:people">
+        <template if:true={registrations}>
+            <lightning-datatable
+                key-field="Id"
+                data={registrations}
+                columns={columns}>
+            </lightning-datatable>
+        </template>
+
+        <template if:true={registrations}>
+            <template for:each={registrations} for:item="reg">
+                <div key={reg.Id} class="slds-box slds-m-around_x-small">
+                    <strong>{reg.Student__r.Name}</strong>
+                    <lightning-button 
+                        variant="destructive" 
+                        label="Odjavi" 
+                        data-id={reg.Id}
+                        onclick={handleCancel}
+                        class="slds-m-left_small">
+                    </lightning-button>
+                </div>
+            </template>
+        </template>
+
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Nalagam..." size="small"></lightning-spinner>
+        </template>
+    </lightning-card>
+</template>
