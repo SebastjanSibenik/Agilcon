@@ -1,0 +1,40 @@
+<template>
+   <lightning-card title="Prijava na Izpitni Rok">
+      <div class="slds-p-around_medium">
+         <!-- Student Combobox -->
+         <lightning-combobox
+            name="student"
+            label="Izbor Študenta"
+            placeholder="Izberi Študenta"
+            options={students}
+            onchange={handleStudentChange}>
+         </lightning-combobox>
+
+         <!-- Exam Date Combobox -->
+         <lightning-combobox
+            name="examDate"
+            label="Izbor Izpitnega Roka"
+            placeholder="Izberi Izpitni Rok"
+            options={examDates}
+            onchange={handleExamDateChange}>
+        </lightning-combobox>
+
+         <!-- Subject Combobox -->
+         <lightning-combobox
+            name="subject"
+            label="Izbor Predmeta"
+            placeholder="Izberi Predmet"
+            options={subjects}
+            onchange={handleSubjectChange}>
+         </lightning-combobox>
+
+         <!-- Register Button -->
+         <lightning-button 
+            label="Prijava" 
+            variant="brand" 
+            onclick={handleRegister} 
+            class="slds-m-top_small">
+         </lightning-button>
+      </div>
+   </lightning-card>
+</template>

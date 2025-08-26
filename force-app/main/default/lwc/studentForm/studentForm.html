@@ -1,52 +1,57 @@
 <template>
-   <lightning-card title="Vnos študenta" icon-name="custom:custom63">
-      <div class="slds-p-around_medium">
-         <!-- Name -->
+   <lightning-card title="Vnos študenta" icon-name="standard:person">
+      <div class="slds-p-around_small">
+
+         <!-- Firstname Input -->
          <lightning-input 
-            type="text" 
-            label="Ime" 
-            value={name} 
-            onchange={handleInputChange} 
-            data-field="name">
+               label="Ime"
+               data-field="firstname"
+               value={student.firstname}
+               onchange={handleChange}>
          </lightning-input>
-         <!-- Surname -->
+
+         <!-- Lastname Input -->
          <lightning-input 
-            type="text" 
-            label="Priimek" 
-            value={surname} 
-            onchange={handleInputChange} 
-            data-field="surname">
+               label="Priimek"
+               data-field="lastname"
+               value={student.lastname}
+               onchange={handleChange}>
          </lightning-input>
-         <!-- EMŠO -->
+
+         <!-- EMSO Input -->
          <lightning-input 
-            type="number" 
-            label="EMŠO" 
-            value={emso} 
-            onchange={handleInputChange} 
-            data-field="emso">
+               label="EMŠO"
+               data-field="emso"
+               value={student.emso}
+               onchange={handleChange}
+               maxlength="13"
+               pattern="\d*">
          </lightning-input>
-         <!-- Study Type -->
-         <lightning-combobox 
-            name="studyType" 
-            label="Tip študija"
-            value={studyType}
-            placeholder="Izberi tip"
-            options={studyOptions}
-            onchange={handleStudyTypeChange}>
+
+         <!-- StudyType Combobox -->
+         <lightning-combobox
+               label="Tip študija"
+               data-field="studyType"
+               value={student.studyType}
+               options={studyOptions}
+               onchange={handleChange}>
          </lightning-combobox>
-         <!-- Payment (conditional) -->
+
+         <!-- Show additional checkbox if studyType == 'izredni' -->
          <template if:true={showPayerCheckbox}>
-            <lightning-input 
-               type="checkbox" 
-               label="Plačnik" 
-               checked={payer}
-               onchange={handleInputChange}
-               data-field="payer">
-            </lightning-input>
+               <lightning-input
+                  type="checkbox"
+                  label="Plačnik"
+                  data-field="payer"
+                  checked={student.payer}
+                  onchange={handleChange}>
+               </lightning-input>
          </template>
-         <!-- Save button -->
-         <div class="slds-m-top_medium">
-            <lightning-button variant="brand" label="Shrani" onclick={handleSave}></lightning-button>
+
+         <!-- Buttons -->
+         <div class="slds-m-top_small">
+               <lightning-button variant="brand" label="Save" onclick={handleSave} class="slds-m-right_small"></lightning-button>
+               <lightning-button variant="neutral" label="Reset" onclick={resetInputFields}></lightning-button>
          </div>
       </div>
    </lightning-card>
