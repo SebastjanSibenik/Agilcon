@@ -10,7 +10,7 @@ export default class StudentForm extends LightningElement {
         lastname: '',
         emso: '',
         studyType: '',
-        payer: false
+        isPayer: false
     };
 
     // --- Getters ---
@@ -62,7 +62,7 @@ export default class StudentForm extends LightningElement {
             lastname: '',
             emso: '',
             studyType: '',
-            payer: false
+            isPayer: false
         };
     }
 

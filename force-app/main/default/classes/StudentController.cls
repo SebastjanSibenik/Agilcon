@@ -7,7 +7,7 @@ public with sharing class StudentController {
      * @param lastname Last name of the student
      * @param emso Unique EMSO identifier
      * @param studyType Type of study (e.g., Bachelor, Master)
-     * @param payer Boolean indicating if student is a payer
+     * @param isPayer Boolean indicating if student is a payer
      * @return Id of the newly created Student record
      * @throws AuraHandledException if validation or insert fails
      */
@@ -17,7 +17,7 @@ public with sharing class StudentController {
         String lastname,
         String emso,
         String studyType,
-        Boolean payer
+        Boolean isPayer
     ) {
         try {
             validateStudentInsertion(firstname, lastname, emso, studyType);
@@ -26,7 +26,7 @@ public with sharing class StudentController {
                 Name = firstname + ' ' + lastname,
                 EMSO__c = emso,
                 Study_Type__c = studyType,
-                Payer__c = payer
+                Is_Payer__c = isPayer
             );
             
             insert s;
@@ -47,7 +47,7 @@ public with sharing class StudentController {
     public static List<Student__c> getStudents() {
         try {
             return [
-                SELECT Id, Name, EMSO__c, Study_Type__c, Payer__c
+                SELECT Id, Name, EMSO__c, Study_Type__c, Is_Payer__c
                 FROM Student__c
                 ORDER BY Name
             ];
@@ -68,7 +68,7 @@ public with sharing class StudentController {
     public static Student__c getByEmso(String emso) {
         try {
             List<Student__c> students = [
-                SELECT Id, Name, EMSO__c, Study_Type__c, Payer__c
+                SELECT Id, Name, EMSO__c, Study_Type__c, Is_Payer__c
                 FROM Student__c
                 WHERE EMSO__c = :emso
                 LIMIT 1
