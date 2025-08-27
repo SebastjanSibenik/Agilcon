@@ -1,7 +1,6 @@
 <template>
    <lightning-card title="Vnos študenta" icon-name="standard:person">
       <div class="slds-p-around_small">
-
          <!-- Firstname Input -->
          <lightning-input 
                label="Ime"
@@ -9,7 +8,6 @@
                value={student.firstname}
                onchange={handleChange}>
          </lightning-input>
-
          <!-- Lastname Input -->
          <lightning-input 
                label="Priimek"
@@ -17,7 +15,6 @@
                value={student.lastname}
                onchange={handleChange}>
          </lightning-input>
-
          <!-- EMSO Input -->
          <lightning-input 
                label="EMŠO"
@@ -27,7 +24,6 @@
                maxlength="13"
                pattern="\d*">
          </lightning-input>
-
          <!-- StudyType Combobox -->
          <lightning-combobox
                label="Tip študija"
@@ -36,7 +32,6 @@
                options={studyOptions}
                onchange={handleChange}>
          </lightning-combobox>
-
          <!-- Show additional checkbox if studyType == 'izredni' -->
          <template if:true={showPayerCheckbox}>
                <lightning-input
@@ -47,7 +42,6 @@
                   onchange={handleChange}>
                </lightning-input>
          </template>
-
          <!-- Buttons -->
          <div class="slds-m-top_small">
                <lightning-button variant="brand" label="Save" onclick={handleSave} class="slds-m-right_small"></lightning-button>

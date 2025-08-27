@@ -1,45 +1,40 @@
 import { LightningElement, wire } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import getExamDates from '@salesforce/apex/ExamRegistrationController.getExamDates';
-import getSubjects from '@salesforce/apex/ExamRegistrationController.getSubjects';
-import saveRegistration from '@salesforce/apex/ExamRegistrationController.saveRegistration';
-import getStudents from '@salesforce/apex/StudentController.getStudents';
+import getExamDatesApex from '@salesforce/apex/ExamRegistrationController.getExamDates';
+import saveRegistrationApex from '@salesforce/apex/ExamRegistrationController.saveRegistration';
+import getStudentsApex from '@salesforce/apex/StudentController.getStudents';
 
+
+// Optional can be deleted - ToDo
 export default class ExamRegistration extends LightningElement {
     // --- State ---
     examDates = [];
     selectedExamDateId = '';
     selectedStudentId = '';
-    selectedSubjectId = '';
     students = [];
-    subjects = [];
 
-    // --- Wire ---
-    @wire(getStudents)
-    getStudents({ data, error }) {
+    // --- Wire Services ---
+    @wire(getStudentsApex)
+    wiredStudents({ data, error }) {
         if (data) {
             this.students = data.map(s => ({ label: s.Name, value: s.Id }));
         } else if (error) {
-            this.showToast('Error', error.body?.message || error.message, 'error');
+            this.showToast('Napaka', error.body?.message || error.message, 'error');
         }
     }
 
-    @wire(getSubjects)
-    getSubjects({ data, error }) {
-        if (data) {
-            this.subjects = data.map(s => ({ label: s.Name, value: s.Id }));
-        } else if (error) {
-            this.showToast('Error', error.body?.message || error.message, 'error');
-        }
-    }
-
-    @wire(getExamDates)
-    getExamDates({ data, error }) {
+    @wire(getExamDatesApex)
+    wiredExamDates({ data, error }) {
         if (data) {
             this.examDates = data.map(e => ({ label: e.Name, value: e.Id }));
         } else if (error) {
-            this.showToast('Error', error.body?.message || error.message, 'error');
+            this.showToast('Napaka', error.body?.message || error.message, 'error');
         }
+    }
+
+    // --- Getters ---
+    get isFormComplete() {
+        return this.selectedStudentId && this.selectedExamDateId;
     }
 
     // --- Event Handlers ---
@@ -56,22 +51,21 @@ export default class ExamRegistration extends LightningElement {
     }
 
     async handleRegister() {
-        if (!this.selectedStudentId || !this.selectedSubjectId || !this.selectedExamDateId) {
-            this.showToast('Error', 'Please select a student, subject, and exam date', 'error');
+        if (!this.isFormComplete) {
+            this.showToast('Napaka', 'Izberite študenta, predmet in izpitni rok', 'error');
             return;
         }
 
         try {
-            const result = await saveRegistration({
+            await saveRegistrationApex({
                 studentId: this.selectedStudentId,
-                subjectId: this.selectedSubjectId,
                 examDateId: this.selectedExamDateId
             });
 
-            this.showToast('Success', 'Registration created! ID: ' + result, 'success');
+            this.showToast('Uspeh', 'Prijava uspešno ustvarjena!', 'success');
             this.resetForm();
         } catch (error) {
-            this.showToast('Error', error.body?.message || error.message, 'error');
+            this.showToast('Napaka', error.body?.message || error.message, 'error');
         }
     }
 

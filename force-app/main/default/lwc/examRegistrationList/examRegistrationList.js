@@ -1,7 +1,7 @@
 import { LightningElement, api, wire } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import cancelRegistration from '@salesforce/apex/ExamRegistrationController.cancelRegistration';
-import getExamRegistrations from '@salesforce/apex/ExamRegistrationController.getExamRegistrations';
+import cancelRegistrationApex from '@salesforce/apex/ExamRegistrationController.cancelRegistration';
+import getExamRegistrationsApex from '@salesforce/apex/ExamRegistrationController.getExamRegistrations';
 import { refreshApex } from '@salesforce/apex';
 
 const COLUMNS = [
@@ -19,13 +19,19 @@ export default class ExamRegistrationsList extends LightningElement {
     // --- State ---
     columns = COLUMNS;
     registrations = [];
-    _results;
+    _wiredResult;
 
-    // --- Wire ---
-    @wire(getExamRegistrations, { examDateId: '$recordId' })
-    getExamRegistrations(result) {
-        this._results = result;
+    // --- Getters ---
+    get hasRegistrations() {
+        return this.registrations.length > 0;
+    }
+
+    // --- Wire Service ---
+    @wire(getExamRegistrationsApex, { examDateId: '$recordId' })
+    wiredExamRegistrations(result) {
+        this._wiredResult = result;
         const { data, error } = result;
+
         if (data) {
             this.registrations = data.map(r => ({
                 ...r,
@@ -37,21 +43,26 @@ export default class ExamRegistrationsList extends LightningElement {
     }
 
     // --- Event Handlers ---
-    async handleRowAction(event) {
+    handleRowAction(event) {
         const { action, row } = event.detail;
         if (action.name === 'cancel') {
-            await this.handleCancel(row.Id);
+            this.handleCancel(row.Id);
         }
     }
 
     async handleCancel(registrationId) {
         try {
-            await cancelRegistration({ registrationId });
+            await this.cancelRegistration(registrationId);
             this.showToast('Uspeh', 'Študent je bil uspešno odjavljen!', 'success');
-            await refreshApex(this._results);
+            await refreshApex(this._wiredResult);
         } catch (error) {
             this.showToast('Napaka', error.body?.message || error.message, 'error');
         }
+    }
+
+    // --- Apex Calls ---
+    async cancelRegistration(registrationId) {
+        return cancelRegistrationApex({ registrationId });
     }
 
     // --- Helpers ---

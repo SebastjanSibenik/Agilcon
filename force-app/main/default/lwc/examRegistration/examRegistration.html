@@ -1,3 +1,4 @@
+<!--// Optional can be deleted - ToDo-->
 <template>
    <lightning-card title="Prijava na Izpitni Rok">
       <div class="slds-p-around_medium">
@@ -17,17 +18,8 @@
             placeholder="Izberi Izpitni Rok"
             options={examDates}
             onchange={handleExamDateChange}>
-        </lightning-combobox>
-
-         <!-- Subject Combobox -->
-         <lightning-combobox
-            name="subject"
-            label="Izbor Predmeta"
-            placeholder="Izberi Predmet"
-            options={subjects}
-            onchange={handleSubjectChange}>
          </lightning-combobox>
-
+         
          <!-- Register Button -->
          <lightning-button 
             label="Prijava" 
