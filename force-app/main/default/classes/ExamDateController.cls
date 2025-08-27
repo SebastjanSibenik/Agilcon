@@ -54,7 +54,7 @@ public with sharing class ExamDateController {
             return [
                 SELECT Id, Name, Date_Time__c
                 FROM Exam_Date__c
-                ORDER BY Date_Time__c DESC
+                ORDER BY Name ASC
             ];
         } catch (Exception e) {
             throw new AuraHandledException('Error fetching Exam Dates: ' + e.getMessage());

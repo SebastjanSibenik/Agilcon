@@ -1,11 +1,11 @@
 import { LightningElement, wire, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import getExamDatesApex from '@salesforce/apex/ExamDateController.getExamDates';
+import getExamDates from '@salesforce/apex/ExamDateController.getExamDates';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class ExamDatesList extends NavigationMixin(LightningElement) {
     // --- State ---
-    @track examDates = [];
+    examDates = [];
 
     columns = [
         {
@@ -17,8 +17,8 @@ export default class ExamDatesList extends NavigationMixin(LightningElement) {
     ];
 
     // --- Wire Service ---
-    @wire(getExamDatesApex)
-    wiredExamDates({ data, error }) {
+    @wire(getExamDates)
+    getExamDates({ data, error }) {
         if (data) {
             this.examDates = data.map(ed => ({
                 ...ed,
