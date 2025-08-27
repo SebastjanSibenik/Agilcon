@@ -33,15 +33,15 @@ Pre-configured Salesforce account:
 
 Represents the date and time of an exam.
 
-| Field Name       | API Name         | Type               | Required | Description                       |
-| ---------------- | ---------------- | ------------------ | -------- | --------------------------------- |
-| Exam Name        | Name             | Text(80)           | ✅       | Name of the exam                  |
-| Date Time        | Date_Time\_\_c   | Date/Time          | ✅       | Date and time of the exam         |
-| Subject          | Subject\_\_c     | Lookup(Subject)    | ✅       | Associated subject                |
-| Status	   | Status__c	      | Picklist	   |	      | Indicates if the exam date accepts registrations or not |
-| Owner            | OwnerId          | Lookup(User,Group) | ✅       | Record owner                      |
-| Created By       | CreatedById      | Lookup(User)       |          | User who created the record       |
-| Last Modified By | LastModifiedById | Lookup(User)       |          | User who last modified the record |
+| Field Name       | API Name         | Type               | Required | Description                                             |
+| ---------------- | ---------------- | ------------------ | -------- | ------------------------------------------------------- |
+| Exam Name        | Name             | Text(80)           | ✅       | Name of the exam                                        |
+| Date Time        | Date_Time\_\_c   | Date/Time          | ✅       | Date and time of the exam                               |
+| Subject          | Subject\_\_c     | Lookup(Subject)    | ✅       | Associated subject                                      |
+| Status           | Status\_\_c      | Picklist           |          | Indicates if the exam date accepts registrations or not |
+| Owner            | OwnerId          | Lookup(User,Group) | ✅       | Record owner                                            |
+| Created By       | CreatedById      | Lookup(User)       |          | User who created the record                             |
+| Last Modified By | LastModifiedById | Lookup(User)       |          | User who last modified the record                       |
 
 ---
 
@@ -84,7 +84,7 @@ Represents a student enrolled in the system.
 | ---------------- | ---------------- | ------------------------------ | -------- | --------------------------------- |
 | Student Name     | Name             | Text(80)                       | ✅       | Name of the student               |
 | EMSO             | EMSO\_\_c        | Text(13) (External ID, Unique) | ✅       | Unique student identifier         |
-| Payer            | Payer\_\_c       | Checkbox                       |          | Indicates if student has a payer  |
+| Is_Payer         | Is_Payer\_\_c    | Checkbox                       |          | Indicates if student has a payer  |
 | Owner            | OwnerId          | Lookup(User,Group)             | ✅       | Record owner                      |
 | Study Type       | Study_Type\_\_c  | Picklist                       | ✅       | Type of study                     |
 | Created By       | CreatedById      | Lookup(User)                   |          | User who created the record       |
@@ -96,14 +96,15 @@ Represents a student enrolled in the system.
 
 Represents an academic subject or course.
 
-| Field Name       | API Name          | Type                           | Required | Description                       |
-| ---------------- | ----------------- | ------------------------------ | -------- | --------------------------------- |
-| Subject Name     | Name              | Text(80)                       | ✅       | Name of the subject               |
-| Subject Code     | Subject_Code\_\_c | Text(20) (External ID, Unique) | ✅       | Unique subject code               |
-| Description      | Description\_\_c  | Text Area(255)                 | ✅       | Subject description               |
-| Owner            | OwnerId           | Lookup(User,Group)             | ✅       | Record owner                      |
-| Created By       | CreatedById       | Lookup(User)                   |          | User who created the record       |
-| Last Modified By | LastModifiedById  | Lookup(User)                   |          | User who last modified the record |
+| Field Name       | API Name          | Type                           | Required | Description                         |
+| ---------------- | ----------------- | ------------------------------ | -------- | ----------------------------------- |
+| Subject Name     | Name              | Text(80)                       | ✅       | Name of the subject                 |
+| Subject Code     | Subject_Code\_\_c | Text(20) (External ID, Unique) | ✅       | Unique subject code                 |
+| Description      | Description\_\_c  | Text Area(255)                 | ✅       | Subject description                 |
+| Owner            | OwnerId           | Lookup(User,Group)             | ✅       | Record owner                        |
+| Created By       | CreatedById       | Lookup(User)                   |          | User who created the record         |
+| Last Modified By | LastModifiedById  | Lookup(User)                   |          | User who last modified the record   |
+| Instructor       | Instructor\_\_c   | Lookup(Instructor)             | ✅       | Instructor in charge of the subject |
 
 ---
 
