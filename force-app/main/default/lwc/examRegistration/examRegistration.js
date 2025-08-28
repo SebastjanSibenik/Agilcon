@@ -1,21 +1,20 @@
+// [OPTIONAL] - This is an optional controller to create student exam registrations. It can be deleted!
 import { LightningElement, wire } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import getExamDatesApex from '@salesforce/apex/ExamRegistrationController.getExamDates';
+import getExamDates from '@salesforce/apex/ExamDateController.getExamDates';
 import saveRegistrationApex from '@salesforce/apex/ExamRegistrationController.saveRegistration';
-import getStudentsApex from '@salesforce/apex/StudentController.getStudents';
+import listStudents from '@salesforce/apex/StudentController.listStudents';
 
-
-// Optional can be deleted - ToDo
 export default class ExamRegistration extends LightningElement {
     // --- State ---
     examDates = [];
+    students = [];
     selectedExamDateId = '';
     selectedStudentId = '';
-    students = [];
 
     // --- Wire Services ---
-    @wire(getStudentsApex)
-    wiredStudents({ data, error }) {
+    @wire(listStudents)
+    listStudents({ data, error }) {
         if (data) {
             this.students = data.map(s => ({ label: s.Name, value: s.Id }));
         } else if (error) {
@@ -23,8 +22,8 @@ export default class ExamRegistration extends LightningElement {
         }
     }
 
-    @wire(getExamDatesApex)
-    wiredExamDates({ data, error }) {
+    @wire(getExamDates)
+    getExamDates({ data, error }) {
         if (data) {
             this.examDates = data.map(e => ({ label: e.Name, value: e.Id }));
         } else if (error) {
@@ -40,10 +39,6 @@ export default class ExamRegistration extends LightningElement {
     // --- Event Handlers ---
     handleStudentChange(event) {
         this.selectedStudentId = event.detail.value;
-    }
-
-    handleSubjectChange(event) {
-        this.selectedSubjectId = event.detail.value;
     }
 
     handleExamDateChange(event) {
@@ -72,7 +67,6 @@ export default class ExamRegistration extends LightningElement {
     // --- Helpers ---
     resetForm() {
         this.selectedStudentId = '';
-        this.selectedSubjectId = '';
         this.selectedExamDateId = '';
         this.template.querySelectorAll('lightning-combobox').forEach(cb => (cb.value = ''));
     }

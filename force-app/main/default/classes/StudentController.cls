@@ -6,9 +6,8 @@ public with sharing class StudentController {
      * @param firstname First name of the student
      * @param lastname Last name of the student
      * @param emso Unique EMSO identifier
-     * @param studyType Type of study (e.g., Bachelor, Master)
-     * @param isPayer Boolean indicating if student is a payer
-     * @return Id of the newly created Student record
+     * @param studyType Type of study (e.g., Izredni, Redni)
+     * @param isPayer Boolean indicating if student is a payer -- Only if studyType == 'Izredni'
      * @throws AuraHandledException if validation or insert fails
      */
     @AuraEnabled
@@ -20,7 +19,8 @@ public with sharing class StudentController {
         Boolean isPayer
     ) {
         try {
-            validateStudentInsertion(firstname, lastname, emso, studyType);
+
+            validateStudentData(firstname, lastname, emso, studyType);
 
             Student__c s = new Student__c(
                 Name = firstname + ' ' + lastname,
@@ -44,7 +44,7 @@ public with sharing class StudentController {
      * @throws AuraHandledException if query fails
      */
     @AuraEnabled(cacheable=true)
-    public static List<Student__c> getStudents() {
+    public static List<Student__c> listStudents() {
         try {
             return [
                 SELECT Id, Name, EMSO__c, Study_Type__c, Is_Payer__c
@@ -52,16 +52,15 @@ public with sharing class StudentController {
                 ORDER BY Name
             ];
         } catch (Exception e) {
-            throw new AuraHandledException('Error fetching students: ' + e.getMessage());
+            throw new AuraHandledException('Napaka pri pridobivanju študentov: ' + e.getMessage());
         }
     }
 
     /**
      * Retrieves a single student record by EMSO.
-     * Returns null if no record is found.
      *
      * @param emso EMSO of the student
-     * @return Student__c record or null
+     * @return Student__c record
      * @throws AuraHandledException if query fails
      */
     @AuraEnabled(cacheable=true)
@@ -75,7 +74,7 @@ public with sharing class StudentController {
             ];
             return students.isEmpty() ? null : students[0];
         } catch (Exception e) {
-            throw new AuraHandledException('Error fetching student: ' + e.getMessage());
+            throw new AuraHandledException('Napaka pri pridobivanju študenta: ' + e.getMessage());
         }
     }
 
@@ -99,13 +98,10 @@ public with sharing class StudentController {
         Http http = new Http();
         HttpResponse response = http.send(request);
 
-        if (response.getStatusCode() != 200) {
-            throw new AuraHandledException('Napaka pri preverjanju EMŠO. HTTP:' + response.getStatusCode());
-        }
-
+        
         Map<String, Object> r = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
-        if (!(Boolean) r.get('success')) {
-            throw new AuraHandledException((String) r.get('message'));
+        if (response.getStatusCode() != 200) {
+            throw new AuraHandledException('Napaka pri preverjanju EMŠO. HTTP:' + response.getStatusCode() + 'Message: ' + r.get('message'));
         }
 
         return (String) r.get('message');
@@ -119,7 +115,8 @@ public with sharing class StudentController {
      * @throws AuraHandledException if EMSO is invalid
      */
     @AuraEnabled
-    public static String validateEmso(String emso) {
+    public static void validateEmso(String emso) {
+        // Check if EMSO is null or empty, if length is exactly 13 and if it contains only digits
         if (String.isBlank(emso) || emso.length() != 13 || !Pattern.matches('\\d{13}', emso)) {
             throw new AuraHandledException('EMŠO mora vsebovati natakno 13 števk.');
         }
@@ -140,10 +137,9 @@ public with sharing class StudentController {
         }
 
         Boolean valid = controlDigit == Integer.valueOf(emso.substring(12, 13));
-        if (valid) {
-            return 'EMšO ni pravilna! Prosim vnesite pravilno EMšO!';
+        if (!valid) {
+            throw new AuraHandledException('EMšO ni pravilna! Prosim vnesite pravilno EMšO.');
         }
-        throw new AuraHandledException('EMšO ni pravilna! Prosim vnesite pravilno EMšO.');
     }
 
     /**
@@ -156,7 +152,7 @@ public with sharing class StudentController {
      * @param studyType Type of study
      */
     @AuraEnabled
-    public static void validateStudentInsertion(
+    public static void validateStudentData(
         String firstname,
         String lastname,
         String emso,
@@ -166,9 +162,6 @@ public with sharing class StudentController {
             String.isBlank(emso) || String.isBlank(studyType)) {
             throw new AuraHandledException('Prosim vnesite vsa potrebna polja.');
         }
-
-        validateEmso(emso);
-
         Student__c existing = getByEmso(emso);
         if (existing != null) {
             throw new AuraHandledException('Študent z podano EMŠO že obstaja. EMŠO: ' + emso);

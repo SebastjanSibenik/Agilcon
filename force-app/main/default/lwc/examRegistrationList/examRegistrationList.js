@@ -1,7 +1,7 @@
 import { LightningElement, api, wire } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import cancelRegistrationApex from '@salesforce/apex/ExamRegistrationController.cancelRegistration';
-import getExamRegistrationsApex from '@salesforce/apex/ExamRegistrationController.getExamRegistrations';
+import cancelRegistration from '@salesforce/apex/ExamRegistrationController.cancelRegistration';
+import getExamRegistrations from '@salesforce/apex/ExamRegistrationController.getExamRegistrations';
 import { refreshApex } from '@salesforce/apex';
 
 const COLUMNS = [
@@ -19,7 +19,7 @@ export default class ExamRegistrationsList extends LightningElement {
     // --- State ---
     columns = COLUMNS;
     registrations = [];
-    _wiredResult;
+    _result;
 
     // --- Getters ---
     get hasRegistrations() {
@@ -27,11 +27,10 @@ export default class ExamRegistrationsList extends LightningElement {
     }
 
     // --- Wire Service ---
-    @wire(getExamRegistrationsApex, { examDateId: '$recordId' })
-    wiredExamRegistrations(result) {
-        this._wiredResult = result;
+    @wire(getExamRegistrations, { examDateId: '$recordId' })
+    getExamRegistrations(result) {
+        this._result = result;
         const { data, error } = result;
-
         if (data) {
             this.registrations = data.map(r => ({
                 ...r,
@@ -52,17 +51,12 @@ export default class ExamRegistrationsList extends LightningElement {
 
     async handleCancel(registrationId) {
         try {
-            await this.cancelRegistration(registrationId);
+            await cancelRegistration({ registrationId });
             this.showToast('Uspeh', 'Študent je bil uspešno odjavljen!', 'success');
-            await refreshApex(this._wiredResult);
+            await refreshApex(this._result);
         } catch (error) {
             this.showToast('Napaka', error.body?.message || error.message, 'error');
         }
-    }
-
-    // --- Apex Calls ---
-    async cancelRegistration(registrationId) {
-        return cancelRegistrationApex({ registrationId });
     }
 
     // --- Helpers ---

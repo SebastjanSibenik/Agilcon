@@ -1,6 +1,6 @@
 <template>
-    <lightning-card title="Vsi izpitni roki" icon-name="standard:examdates">
-        <template if:true={examDates}>
+    <lightning-card title="Vsi izpitni roki">
+        <template if:true={hasExamDates}>
             <lightning-datatable
                 key-field="Id"
                 data={examDates}
@@ -8,7 +8,7 @@
                 hide-checkbox-column>
             </lightning-datatable>
         </template>
-        <template if:false={examDates}>
+        <template if:false={hasExamDates}>
             <p class="slds-p-around_small">Ni podatkov za prikaz.</p>
         </template>
     </lightning-card>

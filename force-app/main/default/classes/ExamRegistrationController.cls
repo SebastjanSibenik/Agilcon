@@ -1,10 +1,10 @@
-// Optional can be deleted - ToDo
+// [OPTIONAL] - This is an optional controller to create student exam registrations. It can be deleted!
 public with sharing class ExamRegistrationController {
 
     /**
-     * Cancels (deletes) an Exam Registration by Id.
+     * Deletes an Exam Registration by Id.
      *
-     * @param registrationId Id of the registration to cancel
+     * @param registrationId Id of the exam registration to cancel
      * @throws AuraHandledException if deletion fails
      */
     @AuraEnabled
@@ -19,21 +19,6 @@ public with sharing class ExamRegistrationController {
         } catch (DmlException e) {
             throw new AuraHandledException('Napaka pri odjavi od izpitnega roka: ' + e.getMessage());
         }
-    }
-
-    /**
-     * Retrieves all Exam Dates, ordered alphabetically by Name.
-     * Cacheable for Lightning performance optimization.
-     *
-     * @return List of Exam_Date__c
-     */
-    @AuraEnabled(cacheable=true)
-    public static List<Exam_Date__c> getExamDates() {
-        return [
-            SELECT Id, Name
-            FROM Exam_Date__c
-            ORDER BY Name
-        ];
     }
 
     /**
@@ -92,19 +77,18 @@ public with sharing class ExamRegistrationController {
      *
      * @param studentId Id of the student
      * @param examDateId Id of the exam date
-     * @return Id of the newly created Exam_Registration__c record
      * @throws AuraHandledException if a registration already exists or DML fails
      */
     @AuraEnabled
     public static void saveRegistration(Id studentId, Id examDateId) {
         try {
-            // Step 1: Check if the exam date is open
-            List<Exam_Date__c> examDates = ExamDateController.getById(examDateId);
-            if (examDates.isEmpty() || examDates[0].Status__c != 'Open') {
+            // Check if the exam date is open
+            Exam_Date__c examDate = ExamDateController.getById(examDateId);
+            if (examDate == null || examDate.Status__c != 'Open') {
                 throw new AuraHandledException('Prijave za izpitni rok niso odprte.');
             }
 
-            // Step 2: Check for duplicate registration
+            // Check for duplicate registration
             if (isDuplicateRegistration(studentId, examDateId)) {
                 throw new AuraHandledException('Študent je že prijavljen na izpitni rok.');
             }
@@ -112,10 +96,8 @@ public with sharing class ExamRegistrationController {
             System.debug('Student does not exist in the DB, continuing...');
         }
 
-        // Step 3: Get Subject from Exam Date
-        Id subjectId = ExamDateController.getSubjectFromExamDate(examDateId);
-
-        // Step 4: Insert new registration
+        // Insert new registration
+        Id subjectId = ExamDateController.getSubjectIdFromExamDate(examDateId);
         try {
             Exam_Registration__c er = new Exam_Registration__c(
                 Student__c   = studentId,

@@ -37,22 +37,13 @@ export default class StudentForm extends LightningElement {
 
     async handleSave() {
         try {
-            await this.validateEMSO();
-            await this.createStudent();
+            await validateEmso({ emso: this.student.emso });
+            await createStudent({ ...this.student });
             this.showToast('Uspeh', 'Študent je bil uspešno vpisan', 'success');
             this.resetInputFields();
         } catch (error) {
             this.showToast('Napaka', error.body?.message || error.message, 'error');
         }
-    }
-
-    // --- Apex Calls ---
-    async createStudent() {
-        return createStudent({ ...this.student });
-    }
-
-    async validateEMSO() {
-        return validateEmso({ emso: this.student.emso });
     }
 
     // --- Helpers ---

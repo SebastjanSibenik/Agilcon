@@ -6,7 +6,6 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 export default class ExamDatesList extends NavigationMixin(LightningElement) {
     // --- State ---
     examDates = [];
-
     columns = [
         {
             label: 'Exam Name',
