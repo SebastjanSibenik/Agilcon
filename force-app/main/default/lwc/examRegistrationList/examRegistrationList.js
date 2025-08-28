@@ -5,7 +5,12 @@ import getExamRegistrations from '@salesforce/apex/ExamRegistrationController.ge
 import { refreshApex } from '@salesforce/apex';
 
 const COLUMNS = [
-    { label: 'Študent', fieldName: 'studentName', type: 'text' },
+    {
+        label: 'Študent',
+        fieldName: 'studentLink',
+        type: 'url',       
+        typeAttributes: { label: { fieldName: 'studentName' }, target: '_self'}
+    },
     {
         type: 'action',
         typeAttributes: { rowActions: [{ label: 'Odjavi', name: 'cancel' }] }
@@ -34,6 +39,7 @@ export default class ExamRegistrationsList extends LightningElement {
         if (data) {
             this.registrations = data.map(r => ({
                 ...r,
+                studentLink: `/lightning/r/Student__c/${r.Student__c}/view`,
                 studentName: r.Student__r?.Name || ''
             }));
         } else if (error) {
