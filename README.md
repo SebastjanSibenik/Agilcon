@@ -23,7 +23,7 @@ Pre-configured Salesforce account:
 
 | Username                    | Password        |
 | --------------------------- | --------------- |
-| sebsibagilcontest@gmail.com | AgilconTest2025!|
+| checkEmail | checkEmail |
 
 # Salesforce User Guide
 
