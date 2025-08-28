@@ -25,6 +25,46 @@ Pre-configured Salesforce account:
 | --------------------------- | --------------- |
 | sebsibagilcontest@gmail.com | AgilconTest2025 |
 
+# Salesforce User Guide
+
+When you log in to your Salesforce account using the provided credentials, please navigate to the **Home** page.
+
+## Home Page Forms
+
+On the Home page, you will find **three forms**:
+
+### 1) Vnos Študenta Form
+
+This form is used to enter a new student’s details, including **Name (ime)**, **Surname (priimek)**, **EMSO**, and **Type of Study (tip študija)**. All fields are required.
+
+- **Save (shrani):** Validates the EMSO using a custom method. If correct, the student record is saved in the Salesforce **Students** object.
+- **Reset (počisti):** Clears all input fields.
+- **Note:** If a student with the same EMSO already exists, the system will prevent the record from being inserted.
+
+### 2) Prijava na Izpitni Rok Form
+
+This optional form is primarily for testing purposes. You can select a **Student (študent)** and a predefined **Exam Date (izpitni rok)**. This creates a new exam registration, visible on the **Exam Date** page.
+
+- Only **open exam dates** are available for registration.
+- Duplicate registrations are **not allowed** and will fail.
+
+### 3) Vsi Izpitni Roki Form
+
+This form displays links to all registered exam dates. Clicking on an exam date redirects you to its specific page, where you can:
+
+- View all registered students (**Prijavljeni Študent**)
+- Unsubscribe students from the exam (**Odjava**)
+
+## Navigation Menu
+
+In addition to the **Home** tab, the navigation menu includes several custom tabs:
+
+- **Students:** Displays the students page (**študent**) and all associated fields
+- **Subjects:** Displays the subjects page (**predmeti**) and all associated fields
+- **Instructors:** Displays the instructors page (**profesorji**) and all associated fields
+- **Exam Dates:** Displays the exam dates page (**izpitni rok**) and all associated fields
+- **Exam Registrations:** Displays the exam registration page (**prijave na izpitni rok**) and all associated fields
+
 ## Salesforce Custom Objects Overview
 
 ---
@@ -33,15 +73,15 @@ Pre-configured Salesforce account:
 
 Represents the date and time of an exam.
 
-| Field Name       | API Name         | Type               | Required | Description                                             |
-| ---------------- | ---------------- | ------------------ | -------- | ------------------------------------------------------- |
-| Exam Name        | Name             | Text(80)           | ✅       | Name of the exam                                        |
-| Date Time        | Date_Time\_\_c   | Date/Time          | ✅       | Date and time of the exam                               |
-| Subject          | Subject\_\_c     | Lookup(Subject)    | ✅       | Associated subject                                      |
-| Status           | Status\_\_c      | Picklist           |          | Indicates if the exam date accepts registrations or not |
-| Owner            | OwnerId          | Lookup(User,Group) | ✅       | Record owner                                            |
-| Created By       | CreatedById      | Lookup(User)       |          | User who created the record                             |
-| Last Modified By | LastModifiedById | Lookup(User)       |          | User who last modified the record                       |
+| Field Name       | API Name         | Type                   | Required | Description                                             |
+| ---------------- | ---------------- | ---------------------- | -------- | ------------------------------------------------------- |
+| Exam Name        | Name             | Text(80)               | ✅       | Name of the exam                                        |
+| Date Time        | Date_Time\_\_c   | Date/Time              | ✅       | Date and time of the exam                               |
+| Subject          | Subject\_\_c     | Lookup(Subject)        | ✅       | Associated subject                                      |
+| Status           | Status\_\_c      | Picklist(Open, Closed) |          | Indicates if the exam date accepts registrations or not |
+| Owner            | OwnerId          | Lookup(User,Group)     | ✅       | Record owner                                            |
+| Created By       | CreatedById      | Lookup(User)           |          | User who created the record                             |
+| Last Modified By | LastModifiedById | Lookup(User)           |          | User who last modified the record                       |
 
 ---
 
