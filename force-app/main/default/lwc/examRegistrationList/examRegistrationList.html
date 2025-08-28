@@ -4,7 +4,8 @@
             <lightning-datatable
                 key-field="Id"
                 data={registrations}
-                columns={columns}>
+                columns={columns}
+                onrowaction={handleRowAction}>
             </lightning-datatable>
         </template>
     </lightning-card>
