@@ -9,7 +9,7 @@ Key tasks included:
 
 1. **Custom Object Creation**: Designing Salesforce custom objects for Student, Exam Date, Subject, and Exam Registration, along with associated fields to capture all necessary information.
 
-2. **LWC Component for Student Entry**: Creating a Lightning Web Component to enter student information, including first name, last name, EMSO (unique identifier), and study type (full-time/part-time). Conditional fields, such as a payer checkbox for part-time students, were also implemented.
+2. **LWC Component for Student Entry**: Creating a Lightning Web Component to enter student information, including first name, last name, EMSO (unique identifier), and study type (redni/izredni). Conditional fields, such as a payer checkbox for 'izredni' students, were also implemented.
 
 3. **EMSO Validation**: Implementing server-side validation for EMSO using an API call to a web service. The component displays success or error messages based on the validation result.
 
@@ -23,11 +23,11 @@ Pre-configured Salesforce account:
 
 | Username                    | Password        |
 | --------------------------- | --------------- |
-| sebsibagilcontest@gmail.com | AgilconTest2025 |
+| sebsibagilcontest@gmail.com | AgilconTest2025!|
 
 # Salesforce User Guide
 
-When you log in to your Salesforce account using the provided credentials, please navigate to the **Home** page.
+When you log in to your Salesforce account using the provided credentials, please launch the **Agilcon** app and navigate to the **Home** page.
 
 ## Home Page Forms
 
