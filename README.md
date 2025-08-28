@@ -23,11 +23,11 @@ Pre-configured Salesforce account:
 
 | Username                    | Password        |
 | --------------------------- | --------------- |
-| sebsibagilcontest@gmail.com | AgilconTest2025 |
+| sebsibagilcontest@gmail.com | AgilconTest2025!|
 
 # Salesforce User Guide
 
-When you log in to your Salesforce account using the provided credentials, please navigate to the **Home** page.
+When you log in to your Salesforce account using the provided credentials, please launch the **Agilcon** app and navigate to the **Home** page.
 
 ## Home Page Forms
 
