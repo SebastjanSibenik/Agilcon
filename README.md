@@ -9,7 +9,7 @@ Key tasks included:
 
 1. **Custom Object Creation**: Designing Salesforce custom objects for Student, Exam Date, Subject, and Exam Registration, along with associated fields to capture all necessary information.
 
-2. **LWC Component for Student Entry**: Creating a Lightning Web Component to enter student information, including first name, last name, EMSO (unique identifier), and study type (redni/izredni). Conditional fields, such as a payer checkbox for part-time students, were also implemented.
+2. **LWC Component for Student Entry**: Creating a Lightning Web Component to enter student information, including first name, last name, EMSO (unique identifier), and study type (redni/izredni). Conditional fields, such as a payer checkbox for 'izredni' students, were also implemented.
 
 3. **EMSO Validation**: Implementing server-side validation for EMSO using an API call to a web service. The component displays success or error messages based on the validation result.
 
